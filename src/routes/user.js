@@ -14,7 +14,7 @@ router.post("/signin", validateSigninRequest, isRequestValidated, signin);
 
 router.post('/todos/add', addTodos);
 router.get('/todos/:userId',getUserId);
-router.get('/todos', requireSignin,  todos);
+router.get('/todos',  todos);
 router.delete('/todos/delete/:id', deleteTodo);
 router.put('/todos/update/:id', updateTodo);
 

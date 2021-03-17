@@ -1,5 +1,5 @@
 const Todo = require("../models/todos");
-const { requireSignin } = require('../controllers/user');
+const { requireSignin } = require("../controllers/user");
 
 // exports.addTodos = (req, res) => {
 //   const addItems = {
@@ -45,7 +45,9 @@ const { requireSignin } = require('../controllers/user');
 //     }
 //   });
 // };
-exports.todos = ( requireSignin, (req, res) => {
+exports.todos =
+  (requireSignin,
+  (req, res) => {
     Todo.find((err, todos) => {
       if (err) console.log(err);
       else {
@@ -54,12 +56,14 @@ exports.todos = ( requireSignin, (req, res) => {
     });
   });
 
-exports.addTodos = ((req, res) => {
+exports.addTodos = (req, res) => {
+  if (req.body && req.body.text !== "") {
+    console.log("in");
     const currentTodo = {
-      key: req.body.key,
+      key: req.body.key,  
       text: req.body.text,
-      userId: req.body.userId
-    }
+      userId: req.body.userId,
+    };
     const todo = new Todo(currentTodo);
     console.log("req.body: ", req.body);
     todo
@@ -70,14 +74,17 @@ exports.addTodos = ((req, res) => {
       .catch((err) => {
         res.status(400).send("adding new todo failed");
       });
-  });
+  } else {
+    res.json({ error: "Input required" });
+  }
+};
 
 exports.getUserId = (req, res) => {
-  console.log('req.params',req.params)
+  console.log("req.params", req.params);
   Todo.find({ email: req.params.email }, (err, todos) => {
     if (err) console.log(err);
     else {
-      console.log(todos)
+      console.log(todos);
       res.json({ todos: todos });
     }
   });
@@ -93,21 +100,20 @@ exports.deleteTodo = (req, res) => {
   });
 };
 
-exports.updateTodo = ((req, res) => {
-    Todo.findById(req.body._id, (err, todo) => {
-      if (!todo) res.status(404).send("Data is not found");
-      else {
-        Todo.findOneAndUpdate(
-          { _id: req.body._id },
-          { $set: { text: req.body.text } },
-          { new: true }
-        )
-          .then((todo) => {
-            res.json("Todo updated");
-          })
-          .catch((err) => {
-            res.status(400).send("Update not possible");
-          });
-      }
-    });
+exports.updateTodo = (req, res) => {
+  Todo.findById(req.body.currentTodo._id, (err, todo) => {
+    if (!todo) res.status(404).send("Data is not found");
+    else {
+      Todo.findOneAndUpdate(
+        { _id: req.body.currentTodo._id },
+        { $set: { text: req.body.currentTodo.text } },
+      )
+        .then((todo) => {
+          res.json("Todo updated");
+        })
+        .catch((err) => {
+          res.status(400).send("Update not possible");
+        });
+    }
   });
+};

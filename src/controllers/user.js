@@ -37,7 +37,7 @@ exports.signin = (req, res) => {
   User.findOne({ email: req.body.email })
     .then((user) => {
       if (user) {
-        // console.log(res.data);
+         console.log(res.data);
         if (user.authenticate(req.body.password)) {
           const token = jwt.sign(
             { _id: user._id },
