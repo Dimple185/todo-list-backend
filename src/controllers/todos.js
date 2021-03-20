@@ -101,11 +101,11 @@ exports.deleteTodo = (req, res) => {
 };
 
 exports.updateTodo = (req, res) => {
-  Todo.findById(req.body.currentTodo._id, (err, todo) => {
+  Todo.findById(req.body.checkTodo._id, (err, todo) => {
     if (!todo) res.status(404).send("Data is not found");
     else {
       Todo.findOneAndUpdate(
-        { _id: req.body.currentTodo._id },
+        { _id: req.body.checkTodo._id },
         { $set: { text: req.body.currentTodo.text } },
       )
         .then((todo) => {

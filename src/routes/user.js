@@ -16,6 +16,6 @@ router.post('/todos/add', addTodos);
 router.get('/todos/:userId',getUserId);
 router.get('/todos',  todos);
 router.delete('/todos/delete/:id', deleteTodo);
-router.put('/todos/update/:id', updateTodo);
+router.put('/todos/update', updateTodo);
 
 module.exports = router;
